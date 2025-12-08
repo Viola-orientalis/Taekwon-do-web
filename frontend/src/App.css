@@ -1,0 +1,81 @@
+/* 폰트 불러오기 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@400;500;700&display=swap');
+
+/* 1. 기본 배경 및 텍스트 설정 */
+body {
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  background-color: #000000 !important; /* 배경: 완전 검정 */
+  color: #ffffff !important;           /* 글씨: 무조건 흰색 */
+  overflow-x: hidden;                  /* 가로 스크롤 방지 */
+}
+
+/* 2. 입력창(Input) 디자인 - 여기가 중요합니다! */
+/* 기본 상태: 짙은 회색 배경 + 흰색 글씨 */
+.form-control {
+  background-color: #222 !important; 
+  border: 1px solid #444 !important;
+  color: #fff !important;
+  border-radius: 0 !important; /* 각진 테두리 */
+}
+
+/* 입력 중일 때: 배경 유지 + 테두리 빨간색 */
+.form-control:focus {
+  background-color: #222 !important;
+  color: #fff !important;
+  border-color: #E50914 !important; /* 포인트 컬러 (레드) */
+  box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.25) !important;
+}
+
+/* placeholder(안내 문구) 색상 밝게 */
+.form-control::placeholder {
+  color: #aaa !important;
+}
+
+/* 3. 카드(Card) 디자인 */
+/* 배경과 구분되도록 아주 약간 밝은 검정(#121212) 사용 */
+.card {
+  background-color: #121212 !important;
+  border: 1px solid #333 !important;
+  color: #fff !important;
+}
+
+/* 카드 내부 소제목 등 강제 흰색 처리 */
+.card-title, .card-text {
+  color: #fff !important;
+}
+
+/* 4. 버튼(Button) 디자인 */
+/* 빨간 버튼 */
+.btn-danger {
+  background-color: #E50914 !important;
+  border-color: #E50914 !important;
+  color: #fff !important;
+}
+.btn-danger:hover {
+  background-color: #b20710 !important;
+}
+
+/* 흰색 테두리 버튼 */
+.btn-outline-light {
+  border-radius: 0 !important;
+}
+.btn-outline-light:hover {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+/* 5. 테이블(Table) 디자인 */
+.table {
+  color: #fff !important;
+  border-color: #333 !important;
+}
+.table-hover tbody tr:hover {
+  color: #fff !important;
+  background-color: #222 !important; /* 마우스 올렸을 때 색상 */
+}
+
+/* 6. 링크(Link) */
+a {
+  text-decoration: none !important;
+  color: inherit; /* 부모 색상 따라가기 */
+}

@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/blogdb?serverTimezone=Asia/Seoul
+    username: root
+    password: your_password # ⚠️ 본인의 MySQL 비밀번호 입력
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # 서버 켤 때 테이블 자동 생성/수정
+    show-sql: true
+
+# JWT 암호화 키 (임의의 긴 문자열을 넣으세요)
+jwt:
+  secret: V2hhdGlzWW91ck5hbWVQbGVhc2Vkb250Zm9yZ2V0bWVtb29ucnU=
