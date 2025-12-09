@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
-import { authApi } from '../../api/services/auth'; // API 서비스 임포트
+import { authApi } from '../../api/services/auth'; // 경로 확인 필요
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -28,14 +28,23 @@ const SignupPage = () => {
 
     try {
       // 2. 회원가입 API 호출
-      // const response = await authApi.signup(formData); 
-      // console.log(response);
+     const signupData = {
+        username: formData.username,
+        password: formData.password,
+        name: formData.name,
+        email: formData.email
+      };
+      
+      console.log("전송 데이터:", signupData);
+
+      await authApi.signup(signupData);
       
       alert('회원가입이 완료되었습니다! 로그인해주세요.');
-      navigate('/login'); // 성공 시 로그인 페이지로 이동
+      navigate('/login'); 
     } catch (error) {
       console.error('Signup failed:', error);
-      alert('회원가입 중 오류가 발생했습니다.');
+      const errorMessage = error.response?.data || '회원가입 중 오류가 발생했습니다.';
+      alert(errorMessage);
     }
   };
 
@@ -57,7 +66,7 @@ const SignupPage = () => {
             />
           </Form.Group>
 
-          {/* 비밀번호 & 확인 (한 줄에 배치) */}
+          {/* 비밀번호 & 확인 */}
           <Row className="mb-3">
             <Col md={6}>
               <Form.Group>

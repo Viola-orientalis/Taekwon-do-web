@@ -1,9 +1,9 @@
 package com.example.backend.board.controller;
 
 import com.example.backend.board.dto.*;
-import com.example.backend.board.entity.Post;
-import com.example.backend.board.repository.PostRepository;
+import com.example.backend.board.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,43 +14,41 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final PostRepository postRepository;
+    // 리포지토리가 아니라 서비스(Service)를 사용합니다.
+    private final PostService postService;
 
-    // 1. 목록 조회 (카테고리 필터 가능)
+    // 1. 목록 조회
     @GetMapping
-    public List<Post> getList(@RequestParam(required = false) String category) {
-        if (category != null && !category.isEmpty()) {
-            return postRepository.findByCategoryOrderByCreatedAtDesc(category);
-        }
-        return postRepository.findAllByOrderByCreatedAtDesc();
+    public ResponseEntity<List<PostResponse>> getList(@RequestParam(required = false) String category) {
+        return ResponseEntity.ok(postService.getPosts(category));
     }
 
     // 2. 상세 조회
     @GetMapping("/{id}")
-    public Post getDetail(@PathVariable Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("글이 없습니다."));
+    public ResponseEntity<PostResponse> getDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(postService.getPost(id));
     }
 
-    // 3. 글 작성 (로그인한 사람만)
+    // 3. 글 작성
     @PostMapping
-    public Post createPost(@RequestBody PostRequest dto, Authentication authentication) {
-        Post post = Post.builder()
-                .title(dto.getTitle())
-                .content(dto.getContent())
-                .category(dto.getCategory())
-                .author(authentication.getName()) // 토큰에서 작성자 이름 꺼냄
-                .build();
-        return postRepository.save(post);
+    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest request, Authentication authentication) {
+        return ResponseEntity.ok(postService.createPost(request, authentication.getName()));
     }
 
-    // 4. 글 삭제 (본인만)
+    // ⭐ 4. 글 수정 (여기가 추가되었습니다!)
+    @PutMapping("/{id}")
+    public ResponseEntity<PostResponse> updatePost(
+            @PathVariable Long id, 
+            @RequestBody PostRequest request, 
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(postService.updatePost(id, request, authentication.getName()));
+    }
+
+    // 5. 글 삭제
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id, Authentication authentication) {
-        Post post = postRepository.findById(id).orElseThrow();
-        if (!post.getAuthor().equals(authentication.getName())) {
-            throw new RuntimeException("삭제 권한이 없습니다.");
-        }
-        postRepository.delete(post);
+    public ResponseEntity<Void> deletePost(@PathVariable Long id, Authentication authentication) {
+        postService.deletePost(id, authentication.getName());
+        return ResponseEntity.ok().build();
     }
 }

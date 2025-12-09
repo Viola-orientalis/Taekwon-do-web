@@ -1,14 +1,28 @@
+server:
+  port: 8080
+
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/blogdb?serverTimezone=Asia/Seoul
+    # 데이터베이스 주소 (맨 끝에 /blogdb 확인)
+    url: jdbc:mysql://localhost:3306/blogdb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    
+    # 데이터베이스 접속 아이디
     username: root
-    password: your_password # ⚠️ 본인의 MySQL 비밀번호 입력
+    
+    # 데이터베이스 비밀번호
+    password: 1234 
+    
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
-      ddl-auto: update # 서버 켤 때 테이블 자동 생성/수정
-    show-sql: true
+      # 서버 실행 시 DB 테이블을 자동으로 생성/수정 (update 권장)
+      ddl-auto: update
+    show-sql: true      # 실행되는 SQL 쿼리를 콘솔에 출력
+    properties:
+      hibernate:
+        format_sql: true
 
-# JWT 암호화 키 (임의의 긴 문자열을 넣으세요)
+# JWT 토큰 생성 및 검증에 사용할 비밀키 (임의의 문자열)
 jwt:
   secret: V2hhdGlzWW91ck5hbWVQbGVhc2Vkb250Zm9yZ2V0bWVtb29ucnU=

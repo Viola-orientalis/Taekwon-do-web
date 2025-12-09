@@ -2,35 +2,48 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Container, Button } from 'react-bootstrap';
 import { useAuth } from '../../context/AuthContext';
-import { boardApi } from '../../api/services/board';
+import { boardApi } from '../../api/services/board'; // 경로 확인 필요
 
 const PostDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 백엔드 연동 전까지 사용할 임시 데이터
-    // 실제 연동 시: const fetchPost = async () => { const res = await boardApi.getDetail(id); setPost(res.data); }
-    setPost({
-      id: id,
-      title: `[공지] ${id}번 게시글의 상세 내용입니다.`,
-      content: '여기에 게시글 본문이 들어갑니다.\n줄바꿈도 지원됩니다.\n\n태권도 정신!',
-      author: 'admin',
-      date: '2023-12-09'
-    });
-  }, [id]);
+    // 실제 백엔드 연동 코드
+    const fetchPost = async () => {
+      try {
+        const response = await boardApi.getDetail(id);
+        setPost(response.data); // 백엔드에서 받은 데이터 저장
+      } catch (error) {
+        console.error("글 불러오기 실패:", error);
+        alert("존재하지 않거나 삭제된 게시글입니다.");
+        navigate(-1);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [id, navigate]);
 
   const handleDelete = async () => {
     if (window.confirm('정말로 삭제하시겠습니까?')) {
-      // await boardApi.deletePost(id);
-      alert('삭제되었습니다.');
-      navigate('/notice');
+      try {
+        await boardApi.deletePost(id);
+        alert('삭제되었습니다.');
+        navigate('/posts'); // 목록으로 이동
+      } catch (error) {
+        console.error("삭제 실패:", error);
+        alert("삭제 권한이 없거나 오류가 발생했습니다.");
+      }
     }
   };
 
-  if (!post) return <div className="text-white text-center py-5">Loading...</div>;
+  if (loading) return <div className="text-white text-center py-5">Loading...</div>;
+  if (!post) return null;
 
   // 본인 글이거나 관리자일 때만 수정/삭제 버튼 노출
   const isOwner = user && (user.username === post.author || user.role === 'ADMIN');
@@ -41,7 +54,7 @@ const PostDetail = () => {
         <h2 className="text-white fw-bold">{post.title}</h2>
         <div className="d-flex justify-content-between text-secondary mt-2">
           <span>작성자: {post.author}</span>
-          <span>{post.date}</span>
+          <span>{new Date(post.createdAt).toLocaleDateString()}</span>
         </div>
       </div>
 

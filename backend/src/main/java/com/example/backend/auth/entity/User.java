@@ -18,12 +18,17 @@ public class User {
     @Column(nullable = false)
     private String password; // 암호화된 비밀번호
 
+    private String name;
+    private String email;
+
     private String role; // "ROLE_USER" or "ROLE_ADMIN"
 
     @Builder
-    public User(String username, String password, String role) {
+    public User(String username, String password, String name, String email, String role) {
         this.username = username;
         this.password = password;
+        this.name = name;
+        this.email = email;
         this.role = role;
     }
 }

@@ -27,6 +27,8 @@ public class AuthService {
         User user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword())) // 암호화!
+                .name(request.getName())   // 저장!
+                .email(request.getEmail()) // 저장!
                 .role("ROLE_USER")
                 .build();
         

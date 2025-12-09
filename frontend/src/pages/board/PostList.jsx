@@ -1,23 +1,26 @@
 import { useState, useEffect } from 'react';
-import { Container, Table, Row, Col, Card, Badge, Button } from 'react-bootstrap';
+import { Container, Table, Row, Col, Card, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { boardApi } from '../../api/services/board'; // 경로 확인 필요
 
 const PostList = ({ category }) => {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
-  const isGallery = category === 'GALLERY';
+  const isGallery = category === 'GALLERY'; // 갤러리 카테고리인지 확인
 
   useEffect(() => {
-    // API 연동 전 임시 데이터
-    const demo = Array.from({ length: 6 }).map((_, i) => ({
-      id: i,
-      title: isGallery ? `갤러리 사진 ${i+1}` : `공지사항 제목입니다 ${i+1}`,
-      author: '관리자',
-      date: '2023.12.09',
-      views: 10 + i,
-      thumbnail: `https://source.unsplash.com/400x300/?taekwondo&sig=${i}`
-    }));
-    setPosts(demo);
+    // 실제 백엔드 연동 코드
+    const fetchPosts = async () => {
+      try {
+        // category props를 백엔드로 전달
+        const response = await boardApi.getList(category);
+        setPosts(response.data);
+      } catch (error) {
+        console.error("목록 불러오기 실패:", error);
+      }
+    };
+
+    fetchPosts();
   }, [category]);
 
   return (
@@ -32,9 +35,12 @@ const PostList = ({ category }) => {
           {posts.map(p => (
             <Col key={p.id}>
               <Card className="h-100 rounded-0 border-0 bg-dark text-white">
-                <Card.Img variant="top" src={p.thumbnail} className="rounded-0 opacity-75" style={{height:'200px', objectFit:'cover'}} />
+                {/* 이미지가 없으면 기본 이미지 표시 */}
+                <Card.Img variant="top" src="https://via.placeholder.com/400x300?text=No+Image" className="rounded-0 opacity-75" style={{height:'200px', objectFit:'cover'}} />
                 <Card.Body>
-                  <Card.Title className="text-truncate">{p.title}</Card.Title>
+                  <Card.Title className="text-truncate">
+                    <Link to={`/posts/${p.id}`} className="text-white text-decoration-none">{p.title}</Link>
+                  </Card.Title>
                 </Card.Body>
               </Card>
             </Col>
@@ -49,14 +55,20 @@ const PostList = ({ category }) => {
               </tr>
             </thead>
             <tbody>
-              {posts.map(p => (
-                <tr key={p.id} className="border-secondary border-opacity-25">
-                  <td className="text-secondary">{p.id}</td>
-                  <td><Link to={`/posts/${p.id}`} className="text-white text-decoration-none">{p.title}</Link></td>
-                  <td className="text-secondary small">{p.author}</td>
-                  <td className="text-secondary small">{p.date}</td>
+              {posts.length > 0 ? (
+                posts.map(p => (
+                  <tr key={p.id} className="border-secondary border-opacity-25">
+                    <td className="text-secondary">{p.id}</td>
+                    <td><Link to={`/posts/${p.id}`} className="text-white text-decoration-none">{p.title}</Link></td>
+                    <td className="text-secondary small">{p.author}</td>
+                    <td className="text-secondary small">{new Date(p.createdAt).toLocaleDateString()}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-4 text-secondary">작성된 글이 없습니다.</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </Table>
         </div>
