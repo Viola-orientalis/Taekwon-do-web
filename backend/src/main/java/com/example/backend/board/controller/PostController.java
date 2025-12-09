@@ -1,8 +1,8 @@
-package com.moonru.backend.board.controller;
+package com.example.backend.board.controller;
 
-import com.moonru.backend.board.dto.*;
-import com.moonru.backend.board.entity.Post;
-import com.moonru.backend.board.repository.PostRepository;
+import com.example.backend.board.dto.*;
+import com.example.backend.board.entity.Post;
+import com.example.backend.board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;

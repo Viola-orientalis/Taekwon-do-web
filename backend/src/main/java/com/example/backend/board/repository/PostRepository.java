@@ -1,6 +1,6 @@
-package com.moonru.backend.board.repository;
+package com.example.backend.board.repository;
 
-import com.moonru.backend.board.entity.Post;
+import com.example.backend.board.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 

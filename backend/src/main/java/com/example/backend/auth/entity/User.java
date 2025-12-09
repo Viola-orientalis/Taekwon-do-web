@@ -1,4 +1,4 @@
-package com.moonru.backend.auth.entity;
+package com.example.backend.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

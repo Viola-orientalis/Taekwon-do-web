@@ -1,7 +1,7 @@
-package com.moonru.backend.common.config;
+package com.example.backend.common.config;
 
-import com.moonru.backend.common.jwt.JwtAuthenticationFilter;
-import com.moonru.backend.common.jwt.JwtTokenProvider;
+import com.example.backend.common.jwt.JwtAuthenticationFilter;
+import com.example.backend.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

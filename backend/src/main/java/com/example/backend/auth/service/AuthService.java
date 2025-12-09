@@ -1,9 +1,9 @@
-package com.moonru.backend.auth.service;
+package com.example.backend.auth.service;
 
-import com.moonru.backend.auth.dto.*;
-import com.moonru.backend.auth.entity.User;
-import com.moonru.backend.auth.repository.UserRepository;
-import com.moonru.backend.common.jwt.JwtTokenProvider;
+import com.example.backend.auth.dto.*;
+import com.example.backend.auth.entity.User;
+import com.example.backend.auth.repository.UserRepository;
+import com.example.backend.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

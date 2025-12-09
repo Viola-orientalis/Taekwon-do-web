@@ -1,4 +1,4 @@
-package com.moonru.backend.board.entity;
+package com.example.backend.board.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

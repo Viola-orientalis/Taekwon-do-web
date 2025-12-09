@@ -1,4 +1,4 @@
-package com.moonru.backend.auth.dto;
+package com.example.backend.auth.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

@@ -1,7 +1,7 @@
-package com.moonru.backend.auth.controller;
+package com.example.backend.auth.controller;
 
-import com.moonru.backend.auth.dto.*;
-import com.moonru.backend.auth.service.AuthService;
+import com.example.backend.auth.dto.*;
+import com.example.backend.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
